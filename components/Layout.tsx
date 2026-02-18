@@ -14,7 +14,8 @@ import {
   Play,
   Pause,
   RotateCcw,
-  Clock
+  Clock,
+  Bookmark
 } from 'lucide-react';
 import { View } from '../types';
 
@@ -34,6 +35,7 @@ const Layout: React.FC<LayoutProps> = ({ currentView, setView, children }) => {
     { id: 'dashboard', label: 'Study Hub', icon: Home },
     { id: 'info', label: 'Test Guide', icon: Info },
     { id: 'flashcards', label: 'Vocabulary', icon: Languages },
+    { id: 'word-bank', label: 'My Word Bank', icon: Bookmark },
     { id: 'grammar', label: 'Grammar', icon: BookOpen },
     { id: 'practice', label: 'Practice Tests', icon: GraduationCap },
     { id: 'ai-tutor', label: 'AI Study Tutor', icon: MessageCircle },

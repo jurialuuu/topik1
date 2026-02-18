@@ -10,7 +10,16 @@ export const getTutorResponse = async (userPrompt: string) => {
       model: 'gemini-3-flash-preview',
       contents: userPrompt,
       config: {
-        systemInstruction: "You are a professional Korean language tutor specialized in TOPIK I (Levels 1 and 2). Your goal is to explain grammar, translate phrases, and provide practice examples in a friendly, encouraging way. Use simple English and include Korean text with Romanization and translations. Keep explanations concise but thorough.",
+        systemInstruction: `You are a professional Korean language tutor specialized in TOPIK I (Levels 1 and 2). 
+        Your goal is to explain grammar, translate phrases, and provide practice examples in a friendly, encouraging way. 
+        
+        FORMATTING RULES:
+        1. Use clear headers for sections (e.g., ### Grammar Point).
+        2. Use bullet points for lists.
+        3. Bold key Korean terms like **학교** or **-이/가**.
+        4. Provide Romanization in [brackets] and English translations in (parentheses).
+        5. Use a structured table-like layout for conjugations where appropriate.
+        6. Keep explanations concise but high-quality.`,
         temperature: 0.7,
       },
     });
@@ -18,6 +27,22 @@ export const getTutorResponse = async (userPrompt: string) => {
   } catch (error) {
     console.error("Gemini Error:", error);
     return "I'm having trouble connecting to my brain right now. Please try again later!";
+  }
+};
+
+export const getQuickTranslation = async (koreanWord: string) => {
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: `Translate this Korean word or short phrase to English for a TOPIK level 1 student. Provide ONLY the English translation, nothing else: "${koreanWord}"`,
+      config: {
+        temperature: 0.1,
+      },
+    });
+    return response.text?.trim() || "Translation not found";
+  } catch (error) {
+    console.error("Translation Error:", error);
+    return "Error translating";
   }
 };
 

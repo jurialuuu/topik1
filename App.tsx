@@ -7,6 +7,7 @@ import FlashcardsView from './components/FlashcardsView';
 import GrammarView from './components/GrammarView';
 import PracticeView from './components/PracticeView';
 import AITutorView from './components/AITutorView';
+import WordBankView from './components/WordBankView';
 import { View } from './types';
 
 const App: React.FC = () => {
@@ -23,6 +24,7 @@ const App: React.FC = () => {
       case 'dashboard': return <Dashboard setView={setCurrentView} />;
       case 'info': return <InfoView onSelectRange={handleNavigateToPractice} />;
       case 'flashcards': return <FlashcardsView />;
+      case 'word-bank': return <WordBankView />;
       case 'grammar': return <GrammarView />;
       case 'practice': 
         return (

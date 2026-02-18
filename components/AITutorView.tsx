@@ -8,6 +8,45 @@ interface Message {
   content: string;
 }
 
+const MarkdownLite: React.FC<{ content: string }> = ({ content }) => {
+  const lines = content.split('\n');
+  
+  return (
+    <div className="space-y-2">
+      {lines.map((line, i) => {
+        // Headers (### Header)
+        if (line.startsWith('### ')) {
+          return <h3 key={i} className="text-xl font-black text-indigo-900 mt-4 mb-2">{line.replace('### ', '')}</h3>;
+        }
+        if (line.startsWith('## ')) {
+          return <h2 key={i} className="text-2xl font-black text-indigo-900 mt-6 mb-3">{line.replace('## ', '')}</h2>;
+        }
+
+        // Bullet points (- Item)
+        if (line.startsWith('- ') || line.startsWith('* ')) {
+          const formatted = line.replace(/^[-*] /, '');
+          return (
+            <div key={i} className="flex gap-2 ml-2">
+              <span className="text-indigo-400">•</span>
+              <span dangerouslySetInnerHTML={{ __html: formatBold(formatted) }} />
+            </div>
+          );
+        }
+
+        // Normal text with bold parsing
+        return (
+          <p key={i} className="min-h-[1em]" dangerouslySetInnerHTML={{ __html: formatBold(line) }} />
+        );
+      })}
+    </div>
+  );
+};
+
+const formatBold = (text: string) => {
+  // Replace **text** with <strong>text</strong>
+  return text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-black text-indigo-700">$1</strong>');
+};
+
 const AITutorView: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: 'Annyeonghaseyo! 👋 I am your personal TOPIK Buddy. Whether it is a tricky grammar point or a vocabulary query, I am here to help. What is on your mind?' }
@@ -63,10 +102,10 @@ const AITutorView: React.FC = () => {
                 {m.role === 'user' ? <User size={24} /> : <Bot size={24} />}
               </div>
               <div className={`
-                p-6 rounded-[2rem] text-base sm:text-lg leading-relaxed whitespace-pre-wrap font-medium shadow-sm
+                p-6 rounded-[2rem] text-base sm:text-lg leading-relaxed font-medium shadow-sm
                 ${m.role === 'user' ? 'bg-indigo-600 text-white rounded-tr-none' : 'bg-slate-50 text-slate-800 rounded-tl-none border border-slate-100'}
               `}>
-                {m.content}
+                {m.role === 'assistant' ? <MarkdownLite content={m.content} /> : m.content}
               </div>
             </div>
           </div>

@@ -7,6 +7,14 @@ export interface Flashcard {
   example?: string;
 }
 
+export interface UserVocab {
+  id: string;
+  korean: string;
+  english: string;
+  learned: boolean;
+  addedAt: number;
+}
+
 export interface GrammarPoint {
   pattern: string;
   explanation: string;
@@ -18,6 +26,7 @@ export interface PracticeQuestion {
   id: string;
   type: 'reading' | 'listening';
   rangeKey: string; // Key to map to the Exam Map sections
+  examSet: number; // Support multiple exam sets (Exam 1, Exam 2, etc.)
   content: string;
   options: string[];
   correctAnswer: number;
@@ -27,4 +36,4 @@ export interface PracticeQuestion {
   script?: string;
 }
 
-export type View = 'dashboard' | 'info' | 'flashcards' | 'grammar' | 'practice' | 'ai-tutor';
+export type View = 'dashboard' | 'info' | 'flashcards' | 'grammar' | 'practice' | 'ai-tutor' | 'word-bank';
